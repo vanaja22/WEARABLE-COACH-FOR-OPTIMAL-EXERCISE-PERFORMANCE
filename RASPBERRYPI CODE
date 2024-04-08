@@ -1,0 +1,24 @@
+import smbus
+# Create MPU6050 object
+mpu6050_sensor = mpu6050.mpu6050(0x68)
+# Set up Google Sheets
+scope = ['https://spreadsheets.google.com/feeds',
+ 'https://www.googleapis.com/auth/drive']
+creds = Credentials.from_service_account_file('credentials.json', scopes=scope)
+client = gspread.authorize(creds)
+sheet = client.open('sshirt').sheet1 # Replace 'Your Google Sheet Name' with your actual sheet 
+name
+# Main loop
+while True:
+ # Read MPU6050 sensor data
+ sensor_data = mpu6050_sensor.get_all_data()
+ accelerometer_data = sensor_data[0]
+ gyroscope_data = sensor_data[1]
+ # Write sensor values to Google Sheet
+ row = [accelerometer_data['x'], accelerometer_data['y'], accelerometer_data['z'],
+ gyroscope_data['x'], gyroscope_data['y'], gyroscope_data['z']]
+ sheet.append_row(row)
+ # Output all sensor values
+ print(f"Accelerometer data: {accelerometer_data}")
+ print(f"Gyroscope data: {gyroscope_data}")
+time.sleep(1)
